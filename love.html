@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8 MARCH ❤️</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css" />
+  <style>
+    .content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .card-wrapper {
+      width: 620px;
+    }
+    .card-wrapper .card {
+      position: relative;
+      width: 310px;
+      height: 551.11px;
+      transform: perspective(1000px) translate(50%) scale(0.5) rotateY(0deg);
+      transform-origin: 50px center;
+      transition: 1s cubic-bezier(0, 0, 0, 0.94);
+    }
+    .card-wrapper .card .side {
+      background: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transform: perspective(1000px) rotateY(0);
+      transform-origin: right center;
+      transform-style: preserve-3d;
+      transition: 1s cubic-bezier(0, 0, 0, 0.94);
+    }
+    .card-wrapper .card .side.side-a {
+      border-radius: 10px 0 0 10px;
+    }
+    .card-wrapper .card .side.side-b {
+      border-radius: 10px 0 0 10px;
+    }
+    .card-wrapper .card .side .back,
+    .card-wrapper .card .side .front {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      backface-visibility: hidden;
+      overflow: hidden;
+      transition: all 0s cubic-bezier(0, 0, 0, 0.94) 0.5s;
+    }
+    .card-wrapper .card .side .front {
+      z-index: 2;
+      transform-origin: center;
+    }
+    .card-wrapper .card .side .back {
+      transform: rotateY(180deg);
+    }
+    .card-wrapper .card .side .back .heart {
+      transform: rotateY(180deg);
+      max-height: 100%;
+    }
+    .card-wrapper .card .side.side-b .front .heart .circle,
+    .card-wrapper .card .side.side-b .front .heart .rect {
+      background: #f9bec7;
+    }
+    .card-wrapper .card .side.side-b .back .heart .title {
+      display: none;
+    }
+    .card-wrapper.active .card {
+      transform: perspective(1000px) translate(0%) scale(1) rotateY(0);
+    }
+    .card-wrapper.active .card .side.side-b {
+      transform: perspective(1000px) rotateY(180deg);
+    }
+    .card-wrapper.active .card .side-a .front .heart .circle,
+    .card-wrapper.active .card .side-a .front .heart .rect {
+      background: #ff5c8a !important;
+    }
+    .card-wrapper.active .card .side-b .back .heart .circle,
+    .card-wrapper.active .card .side-b .back .heart .rect {
+      background: #ff5c8a !important;
+    }
+    .card-wrapper:not(.active) .heart {
+      cursor: pointer;
+    }
+    .heart {
+      font-family: 'Satisfy', cursive;
+    }
+    .heart .heart-half {
+      transform: rotate(-45deg) scale(0.8) translateX(23%) translateY(10%);
+      transform-origin: 155px 155px;
+    }
+    .heart .heart-half .circle {
+      width: 310px;
+      height: 310px;
+      background: red;
+      border-radius: 50%;
+      transition: background 1s cubic-bezier(0, 0, 0, 0.94);
+    }
+    .heart .heart-half .rect {
+      width: 310px;
+      height: 310px;
+      background: red;
+      margin-top: -155px;
+      transition: background 1s cubic-bezier(0, 0, 0, 0.94);
+    }
+    .heart .title {
+      position: static;
+      top: 30%;
+      right: 10%;
+      font-size: 38px;
+      transform: rotate(1deg);
+      color: #ff0a54;
+    }
+    .ijustcode {
+      position: absolute;
+      top: 137.78px;
+      right: 0;
+      height: 100px;
+      margin: auto;
+      backface-visibility: hidden;
+      transform: translateX(50%);
+    }
+    .side-b .ijustcode code {
+      transform: rotateY(-180deg);
+    }
+    .side-b .front .ijustcode {
+      display: none;
+    }
+    .hljs-addition,
+    .hljs-attribute,
+    .hljs-meta .hljs-string,
+    .hljs-regexp,
+    .hljs-string {
+      color: #c379ba;
+      font-weight: 600;
+    }
+    pre code.hljs {
+      border-radius: 10px;
+    }
+    audio {
+      display: none;
+    }
+    @keyframes confetti-slow {
+      0% {
+        transform: translate3d(0, 0, 0) rotateX(0) rotateY(0);
+      }
+      100% {
+        transform: translate3d(25px, 105vh, 0) rotateX(360deg) rotateY(180deg);
+      }
+    }
+    @keyframes confetti-medium {
+      0% {
+        transform: translate3d(0, 0, 0) rotateX(0) rotateY(0);
+      }
+      100% {
+        transform: translate3d(100px, 105vh, 0) rotateX(100deg) rotateY(360deg);
+      }
+    }
+    @keyframes confetti-fast {
+      0% {
+        transform: translate3d(0, 0, 0) rotateX(0) rotateY(0);
+      }
+      100% {
+        transform: translate3d(-50px, 105vh, 0) rotateX(10deg) rotateY(250deg);
+      }
+    }
+    .confetti-container {
+      perspective: 700px;
+      position: absolute;
+      overflow: hidden;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+    }
+    .confetti {
+      position: absolute;
+      z-index: 1;
+      top: -10px;
+      border-radius: 0%;
+    }
+    .confetti-animation-slow {
+      animation: confetti-slow 2.5s linear 1 forwards;
+    }
+    .confetti-animation-medium {
+      animation: confetti-medium 2s linear 1 forwards;
+    }
+    .confetti-animation-fast {
+      animation: confetti-fast 1.5s linear 1 forwards;
+    }
+    #gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      opacity: 0;
+      transition: opacity 1s cubic-bezier(0, 0, 0, 0.94);
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div id="background"></div>
+    <div class="card-wrapper">
+      <div class="card card-main">
+        <div class="side side-a">
+          <div class="back">
+            <div class="heart">
+              <div class="heart-half">
+                <div class="circle"></div>
+                <div class="rect"></div>
+              </div>
+              <pre class="ijustcode"><code class="language-javascript">  console.log(
+      'С 8 МАРТА  '
+    );</code></pre>
+            </div>
+          </div>
+          <div class="front">
+            <div class="heart">
+              <div class="heart-half">
+                <div class="circle"></div>
+                <div class="rect"></div>
+              </div>
+              <pre class="ijustcode"><code class="language-javascript">  console.log(
+      'С 8 МАРТА  '
+    );</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="side side-b">
+          <div class="back">
+            <div class="heart">
+              <div class="heart-half">
+                <div class="circle"></div>
+                <div class="rect"></div>
+              </div>
+              <pre class="ijustcode"><code class="language-javascript">  console.log(
+      'С 8 МАРТА  '
+    );</code></pre>
+              <div class="title">тыкай сюда</div>
+            </div>
+          </div>
+          <div class="front">
+            <div class="heart">
+              <div class="heart-half">
+                <div class="circle"></div>
+                <div class="rect"></div>
+              </div>
+              <pre class="ijustcode"><code class="language-javascript">  console.log(
+      'С 8 МАРТА  '
+    );</code></pre>
+              <div class="title">тыкай сюда</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <audio controls="controls" src="https://toptrack-assets.s3.eu-central-1.amazonaws.com/i-just-called-comp.mp3">Your browser does not support the audio element</audio>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/granim/2.0.0/granim.min.js"></script>
+  <script>
+    (function(){
+      hljs.highlightAll();
+      var Confetti = function(options) {
+        var t = this;
+        t.o = options || {};
+        t.doms = {};
+        t.vars = {
+          confettiFrequency: 3,
+          confettiColors: ['#fce18a', '#ff726d', '#b48def', '#f4306d'],
+          confettiSpeed: ['slow', 'medium', 'fast'],
+          confetiCount: 0,
+          confetiLimit: 100,
+          confettiDestroyTime: 3000,
+          confettiRenderTime: 60,
+          confettiSizeRange: [3, 7]
+        };
+        t.classes = { confettiContainer: 'confetti-container' };
+        t.callbacks = {};
+        if(t.handleOptions()){
+          t.init();
+        }
+      };
+      Confetti.prototype.handleOptions = function(){
+        var t = this;
+        if(t.o.target){
+          t.doms.target = t.o.target;
+        } else {
+          throw 'Confetti.options.target - is not valid DOM element';
+          return false;
+        }
+        if(!!t.o.onstart){
+          t.callbacks.onstart = t.o.onstart;
+        }
+        if(!!t.o.ondone){
+          t.callbacks.ondone = t.o.ondone;
+        }
+        return true;
+      };
+      Confetti.prototype.setupElements = function () {
+        var t = this,
+            containerDOM = document.createElement('div'),
+            targetPosition = t.doms.target.style.position;
+        containerDOM.className = t.classes['confettiContainer'];
+        if (targetPosition != 'relative' || targetPosition != 'absolute') {
+          t.doms.target.style.position = 'relative';
+        }
+        t.doms.target.appendChild(containerDOM);
+        t.doms.containerDOM = containerDOM;
+      };
+      Confetti.prototype.getContainerSize = function(){
+        var t = this;
+        return Math.floor(Math.random() * t.vars.confettiSizeRange[0]) + t.vars.confettiSizeRange[1] + 'px';
+      };
+      Confetti.prototype.getConfettiColor = function(){
+        var t = this;
+        return t.vars.confettiColors[Math.floor(Math.random() * t.vars.confettiColors.length)];
+      };
+      Confetti.prototype.getConfettiSpeed = function(){
+        var t = this;
+        return t.vars.confettiSpeed[Math.floor(Math.random() * t.vars.confettiSpeed.length)];
+      };
+      Confetti.prototype.getConfettiPosition = function(){
+        var t = this;
+        return Math.floor(Math.random() * t.doms.target.offsetWidth) + 'px';
+      };
+      Confetti.prototype.generateConfetti = function(){
+        var t = this,
+            confettiDOM = document.createElement('div'),
+            confettiSize = t.getContainerSize(),
+            confettiBackground = t.getConfettiColor(),
+            confettiLeft = t.getConfettiPosition(),
+            confettiSpeed = t.getConfettiSpeed();
+        confettiDOM.classList.add('confetti');
+        confettiDOM.classList.add('confetti-animation-' + confettiSpeed);
+        confettiDOM.style.left = confettiLeft;
+        confettiDOM.style.width = confettiSize;
+        confettiDOM.style.height = confettiSize;
+        confettiDOM.style.backgroundColor = confettiBackground;
+        confettiDOM.removeTimeout = setTimeout(function () {
+          confettiDOM.parentNode.removeChild(confettiDOM);
+        }, t.vars.confettiDestroyTime);
+        t.doms.containerDOM.appendChild(confettiDOM);
+      };
+      Confetti.prototype.renderConfetti = function () {
+        var t = this;
+        if(t.callbacks.onstart){
+          t.callbacks.onstart();
+        }
+        t.confettiInterval = setInterval(function () {
+          t.vars.confetiCount++;
+          if(t.vars.confetiCount > t.vars.confetiLimit){
+            if(t.callbacks.ondone){
+              t.callbacks.ondone();
+            }
+            clearInterval(t.confettiInterval);
+            return false;
+          } else {
+            t.generateConfetti();
+          }
+        }, t.vars.confettiRenderTime);
+      };
+      Confetti.prototype.restart = function(instance){
+        var t = this || instance;
+        t.vars.confetiCount = 0;
+        t.renderConfetti();
+      };
+      Confetti.prototype.start = Confetti.prototype.restart;
+      Confetti.prototype.stop = function(){
+        var t = this || instance;
+        t.vars.confetiCount = t.vars.confetiLimit;
+      };
+      Confetti.prototype.init = function(){
+        var t = this;
+        t.setupElements();
+      };
+      var content = document.querySelector('.content'),
+          gradient = document.querySelector('#background'),
+          cardWrapper = document.querySelector('.card-wrapper'),
+          audio = document.querySelector('audio'),
+          confetti = new Confetti({target: content});
+      cardWrapper.addEventListener('click', function(){
+        var isActive = cardWrapper.classList.contains('active');
+        if(isActive){
+          cardWrapper.classList.remove('active');
+          audio.pause();
+          confetti.stop();
+          gradient.style.opacity = 0;
+        } else {
+          cardWrapper.classList.add('active');
+          audio.play();
+          confetti.start();
+          gradient.style.opacity = 1;
+        }
+      });
+      var card = cardWrapper,
+          motionMatchMedia = window.matchMedia("(prefers-reduced-motion)"),
+          THRESHOLD = 30;
+      function handleHover(e) {
+        var clientX = e.clientX, clientY = e.clientY, currentTarget = e.currentTarget,
+            clientWidth = currentTarget.clientWidth, clientHeight = currentTarget.clientHeight,
+            offsetLeft = currentTarget.offsetLeft, offsetTop = currentTarget.offsetTop,
+            horizontal = (clientX - offsetLeft) / clientWidth,
+            vertical = (clientY - offsetTop) / clientHeight,
+            rotateX = (THRESHOLD / 2 - horizontal * THRESHOLD).toFixed(2),
+            rotateY = (vertical * THRESHOLD - THRESHOLD / 2).toFixed(2);
+        card.style.transform = "perspective(" + clientWidth + "px) rotateX(" + rotateY + "deg) rotateY(" + rotateX + "deg) scale3d(1, 1, 1)";
+      }
+      function resetStyles(e) {
+        card.style.transform = "perspective(" + e.currentTarget.clientWidth + "px) rotateX(0deg) rotateY(0deg)";
+      }
+      if (!motionMatchMedia.matches) {
+        card.addEventListener("mousemove", handleHover);
+        card.addEventListener("mouseleave", resetStyles);
+      }
+      new Granim({
+        element: "#gradient",
+        direction: "radial",
+        isPausedWhenNotInView: true,
+        states: {
+          "default-state": {
+            gradients: [
+              ["#ff8faf", "#ffe5ed"],
+              ["#f38fff", "#ffe5ed"],
+              ["#ff8f8f", "#ffe5ed"]
+            ]
+          }
+        }
+      });
+    }());
+  </script>
+  <script src="script/main.js"></script>
+  <script>
+      function setupMusic() {
+          const music = document.getElementById('backgroundMusic');
+          
+          const isMusicPlaying = localStorage.getItem('musicPlaying') === 'true';
+          const musicCurrentTime = localStorage.getItem('musicCurrentTime') || 0;
+  
+          if (isMusicPlaying) {
+              music.currentTime = parseFloat(musicCurrentTime);
+          }
+  
+          music.addEventListener('play', () => {
+              localStorage.setItem('musicPlaying', 'true');
+          });
+  
+          music.addEventListener('pause', () => {
+            localStorage.setItem('musicPlaying', 'false');
+        });
+  
+          setInterval(() => {
+              localStorage.setItem('musicCurrentTime', music.currentTime);
+          }, 1000);
+  
+          document.addEventListener('click', function startMusic() {
+              music.play().catch(error => {
+                  console.log('Autoplay prevented', error);
+              });
+              document.removeEventListener('click', startMusic);
+          });
+      }
+  
+          document.addEventListener('DOMContentLoaded', setupMusic);
+  </script>
+  
+  <audio id="backgroundMusic" loop>
+      <source src="assets/blue.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+  </script>
+</body>
+</html>
